@@ -1,19 +1,19 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import nz.ac.auckland.se281.Main.PolicyType;
 
 public class InsuranceSystem {
   private Integer numberOfProfiles;
-  // private ArrayList<User> users;
-  private HashMap<String, Object> users;
+  // using LinkedHashMap to preserve the order of insertion
+  private LinkedHashMap<String, Object> users;
 
   public InsuranceSystem() {
     // Only this constructor can be used (if you need to initialise fields).
     this.numberOfProfiles = 0;
-    this.users = new HashMap<String, Object>();
+    this.users = new LinkedHashMap<String, Object>();
   }
   
   public void printDatabase() {
@@ -44,16 +44,22 @@ public class InsuranceSystem {
   
   public void createNewProfile(String userName, String age) {
 
+    // format userName
+    String formattedUserName = userName.substring(0, 1).toUpperCase() + userName.substring(1).toLowerCase();
+
     // validation
-    if (userName.length() < 3) {
-      MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(userName);
+    if (formattedUserName.length() < 3) {
+      MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
+      return;
+    } else if (users.get(formattedUserName) != null){
+      MessageCli.INVALID_USERNAME_NOT_UNIQUE.printMessage(formattedUserName);
       return;
     }
 
-    User user = new User(userName, Integer.parseInt(age));
-    users.put(userName, user);
+    User user = new User(formattedUserName, Integer.parseInt(age));
+    users.put(formattedUserName, user);
     this.numberOfProfiles++;
-    System.out.println("New profile created for " + userName + " with age " + age + ".");
+    System.out.println("New profile created for " + formattedUserName + " with age " + age + ".");
     
   }
 
