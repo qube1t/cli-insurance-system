@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import nz.ac.auckland.se281.Main.PolicyType;
@@ -9,11 +8,14 @@ public class InsuranceSystem {
   private Integer numberOfProfiles;
   // using LinkedHashMap to preserve the order of insertion
   private LinkedHashMap<String, Object> users;
+  private User loadedUser;
 
   public InsuranceSystem() {
     // Only this constructor can be used (if you need to initialise fields).
     this.numberOfProfiles = 0;
     this.users = new LinkedHashMap<String, Object>();
+
+    this.loadedUser = null;
   }
   
   public void printDatabase() {
@@ -44,9 +46,7 @@ public class InsuranceSystem {
   
   public void createNewProfile(String userName, String age) {
 
-    // format userName
-    String formattedUserName = userName.substring(0, 1).toUpperCase() + userName.substring(1).toLowerCase();
-
+    String formattedUserName = titleCase(userName);
     // validation
     if (formattedUserName.length() < 3) {
       MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
@@ -55,7 +55,7 @@ public class InsuranceSystem {
       MessageCli.INVALID_USERNAME_NOT_UNIQUE.printMessage(formattedUserName);
       return;
     }
-
+    
     User user = new User(formattedUserName, Integer.parseInt(age));
     users.put(formattedUserName, user);
     this.numberOfProfiles++;
@@ -63,8 +63,25 @@ public class InsuranceSystem {
     
   }
 
+  private String titleCase(String input) {
+    // for formatting userName
+    String formattedString = input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    return formattedString;
+  }
+
   public void loadProfile(String userName) {
-    // TODO: Complete this method.
+    // setting the loaded user to be the inputed user
+    String formattedUserName = titleCase(userName);
+
+    this.loadedUser = (User) users.get(formattedUserName);
+
+    // check if user exists
+    if (this.loadedUser == null) {
+      MessageCli.NO_PROFILE_FOUND_TO_LOAD.printMessage(formattedUserName);
+      return;
+    }
+
+    MessageCli.PROFILE_LOADED.printMessage(formattedUserName);
   }
 
   public void unloadProfile() {
