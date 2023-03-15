@@ -104,7 +104,23 @@ public class InsuranceSystem {
   }
 
   public void deleteProfile(String userName) {
-    // TODO: Complete this method.
+    // check if user exists
+    String formattedUserName = titleCase(userName);
+    if (users.get(formattedUserName) == null) {
+      MessageCli.NO_PROFILE_FOUND_TO_DELETE.printMessage(formattedUserName);
+      return;
+    }
+
+    // check if user is loaded, return error if so
+    if (this.loadedUser == users.get(formattedUserName)) {
+      MessageCli.CANNOT_DELETE_PROFILE_WHILE_LOADED.printMessage(formattedUserName);
+      return;
+    }
+
+    // delete the user
+    users.remove(formattedUserName);
+    this.numberOfProfiles--;
+    MessageCli.PROFILE_DELETED.printMessage(formattedUserName);
   }
 
   public void createPolicy(PolicyType type, String[] options) {
