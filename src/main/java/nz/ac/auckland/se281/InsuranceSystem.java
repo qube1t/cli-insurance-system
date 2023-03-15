@@ -39,7 +39,13 @@ public class InsuranceSystem {
       // gets the user object from the hash using the username
       User user = (User) users.get(userName);
       // prints the details from user object
+      // if the user is the loaded user, print asterisks
+      if (this.loadedUser == user){
+        MessageCli.PRINT_DB_PROFILE_HEADER_SHORT.printMessage("*** ", i.toString(), userName, user.age.toString());
+      }
+      else {
       MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName, user.age.toString());
+      }
     }
 
   }
@@ -85,7 +91,16 @@ public class InsuranceSystem {
   }
 
   public void unloadProfile() {
-    // TODO: Complete this method.
+    // check if a user is loaded
+    if (this.loadedUser == null) {
+      MessageCli.NO_PROFILE_LOADED.printMessage();
+      return;
+    }
+
+    // unloading the user
+    String userName = this.loadedUser.userName;
+    this.loadedUser = null;
+    MessageCli.PROFILE_UNLOADED.printMessage(userName);
   }
 
   public void deleteProfile(String userName) {
