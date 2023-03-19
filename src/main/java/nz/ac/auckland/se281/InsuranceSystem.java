@@ -68,28 +68,28 @@ public class InsuranceSystem {
     String formattedUserName = makeTitleCase(userName);
     
     // validation
-    // checking if age is an integer
     if (ageInt == -1) {
+      // checking if age is an integer
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
     }
-    // see if a user is already loaded
     else if (this.loadedUser != null){
+      // see if a user is already loaded
       MessageCli.CANNOT_CREATE_WHILE_LOADED.printMessage(loadedUser.getUserName());
       return;
     } 
-    // see if the username is too short
     else if (formattedUserName.length() < 3) {
+      // see if the username is too short
       MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
       return;
     } 
-    // see if the age is invalid
     else if (ageInt < 0 || ageInt > 120){
+      // see if the age is invalid
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
     } 
-    // see if the username is already taken
     else if (users.get(formattedUserName) != null){
+      // see if the username is already taken
       MessageCli.INVALID_USERNAME_NOT_UNIQUE.printMessage(formattedUserName);
       return;
     }
