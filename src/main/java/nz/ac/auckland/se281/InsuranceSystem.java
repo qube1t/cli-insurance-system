@@ -50,15 +50,31 @@ public class InsuranceSystem {
 
   }
   
+  private int parseAge(String age) {
+    // Parses the age string into an integer.
+    // If the age is invalid, returns -1.
+    try {
+      return Integer.parseInt(age);
+    } catch (NumberFormatException e) {
+      return -1;
+    }
+  }
+
+
   public void createNewProfile(String userName, String age) {
 
-
-    int ageInt = Integer.parseInt(age);
+    int ageInt = parseAge(age);
+    
     String formattedUserName = makeTitleCase(userName);
-
+    
     // validation
+    // checking if age is an integer
+    if (ageInt == -1) {
+      MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
+      return;
+    }
     // see if a user is already loaded
-    if (this.loadedUser != null){
+    else if (this.loadedUser != null){
       MessageCli.CANNOT_CREATE_WHILE_LOADED.printMessage(loadedUser.getUserName());
       return;
     } 
@@ -69,7 +85,7 @@ public class InsuranceSystem {
     } 
     // see if the age is invalid
     else if (ageInt < 0 || ageInt > 120){
-      MessageCli.INVALID_AGE.printMessage(age);
+      MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
     } 
     // see if the username is already taken
@@ -93,17 +109,18 @@ public class InsuranceSystem {
   }
 
   public void loadProfile(String userName) {
-    // setting the loaded user to be the inputed user
     String formattedUserName = makeTitleCase(userName);
-
+    
+    // setting the loaded user to be the inputed user
     this.loadedUser = (User) users.get(formattedUserName);
-
+    
     // check if user exists
     if (this.loadedUser == null) {
       MessageCli.NO_PROFILE_FOUND_TO_LOAD.printMessage(formattedUserName);
       return;
     }
-
+    
+    // successfully loaded
     MessageCli.PROFILE_LOADED.printMessage(formattedUserName);
   }
 
