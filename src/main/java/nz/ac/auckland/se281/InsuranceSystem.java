@@ -17,17 +17,15 @@ public class InsuranceSystem {
 
     this.loadedUser = null;
   }
-  
+
   public void printDatabase() {
     // Prints the right message depending on the number of profiles.
     if (this.numberOfProfiles == 0) {
       MessageCli.PRINT_DB_POLICY_COUNT.printMessage(this.numberOfProfiles.toString(), "s", ".");
       return;
-    }
-    else if (this.numberOfProfiles == 1) {
+    } else if (this.numberOfProfiles == 1) {
       MessageCli.PRINT_DB_POLICY_COUNT.printMessage(this.numberOfProfiles.toString(), "", ":");
-    }
-    else {
+    } else {
       MessageCli.PRINT_DB_POLICY_COUNT.printMessage(this.numberOfProfiles.toString(), "s", ":");
     }
 
@@ -40,16 +38,15 @@ public class InsuranceSystem {
       User user = (User) users.get(userName);
       // prints the details from user object
       // if the user is the loaded user, print asterisks
-      if (this.loadedUser == user){
+      if (this.loadedUser == user) {
         MessageCli.PRINT_DB_PROFILE_HEADER_SHORT.printMessage("*** ", i.toString(), userName, user.getAge().toString());
-      }
-      else {
-      MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName, user.getAge().toString());
+      } else {
+        MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName, user.getAge().toString());
       }
     }
 
   }
-  
+
   private int parseAge(String age) {
     // Parses the age string into an integer.
     // If the age is invalid, returns -1.
@@ -60,46 +57,41 @@ public class InsuranceSystem {
     }
   }
 
-
   public void createNewProfile(String userName, String age) {
 
     int ageInt = parseAge(age);
-    
+
     String formattedUserName = makeTitleCase(userName);
-    
+
     // validation
     if (ageInt == -1) {
       // checking if age is an integer
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
-    }
-    else if (this.loadedUser != null){
+    } else if (this.loadedUser != null) {
       // see if a user is already loaded
       MessageCli.CANNOT_CREATE_WHILE_LOADED.printMessage(loadedUser.getUserName());
       return;
-    } 
-    else if (formattedUserName.length() < 3) {
+    } else if (formattedUserName.length() < 3) {
       // see if the username is too short
       MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
       return;
-    } 
-    else if (ageInt < 0 || ageInt > 120){
+    } else if (ageInt < 0 || ageInt > 120) {
       // see if the age is invalid
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
-    } 
-    else if (users.get(formattedUserName) != null){
+    } else if (users.get(formattedUserName) != null) {
       // see if the username is already taken
       MessageCli.INVALID_USERNAME_NOT_UNIQUE.printMessage(formattedUserName);
       return;
     }
-    
+
     // creating new user and adding to hash
     User user = new User(formattedUserName, ageInt);
     users.put(formattedUserName, user);
     this.numberOfProfiles++;
     System.out.println("New profile created for " + formattedUserName + " with age " + ageInt + ".");
-    
+
   }
 
   private String makeTitleCase(String input) {
@@ -110,16 +102,16 @@ public class InsuranceSystem {
 
   public void loadProfile(String userName) {
     String formattedUserName = makeTitleCase(userName);
-    
+
     // setting the loaded user to be the inputed user
     this.loadedUser = (User) users.get(formattedUserName);
-    
+
     // check if user exists
     if (this.loadedUser == null) {
       MessageCli.NO_PROFILE_FOUND_TO_LOAD.printMessage(formattedUserName);
       return;
     }
-    
+
     // successfully loaded
     MessageCli.PROFILE_LOADED.printMessage(formattedUserName);
   }
