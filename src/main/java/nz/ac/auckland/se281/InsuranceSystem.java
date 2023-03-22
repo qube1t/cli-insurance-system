@@ -39,9 +39,11 @@ public class InsuranceSystem {
       // prints the details from user object
       // if the user is the loaded user, print asterisks
       if (this.loadedUser == user) {
-        MessageCli.PRINT_DB_PROFILE_HEADER_SHORT.printMessage("*** ", i.toString(), userName, user.getAge().toString());
+        MessageCli.PRINT_DB_PROFILE_HEADER_SHORT.printMessage("*** ", i.toString(), userName,
+            String.valueOf(user.getAge()));
       } else {
-        MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName, user.getAge().toString());
+        MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName,
+            Integer.toString(user.getAge()));
       }
     }
 
@@ -90,7 +92,7 @@ public class InsuranceSystem {
     User user = new User(formattedUserName, ageInt);
     users.put(formattedUserName, user);
     this.numberOfProfiles++;
-    System.out.println("New profile created for " + formattedUserName + " with age " + ageInt + ".");
+    MessageCli.PROFILE_CREATED.printMessage(formattedUserName, age);
 
   }
 
