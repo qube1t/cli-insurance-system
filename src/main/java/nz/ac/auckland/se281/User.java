@@ -4,7 +4,7 @@ public class User {
     private String userName;
     private int age;
 
-    public User(String userName, Integer age) {
+    public User(String userName, int age) {
         this.userName = userName;
         this.age = age;
     }
@@ -13,7 +13,7 @@ public class User {
         return this.userName;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return this.age;
     }
 }
