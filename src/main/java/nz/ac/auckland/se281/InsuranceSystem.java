@@ -94,7 +94,6 @@ public class InsuranceSystem {
     this.numberOfProfiles++;
     // prints integer to string to prevent user formatting while printing
     MessageCli.PROFILE_CREATED.printMessage(formattedUserName, Integer.toString(ageInt));
-
   }
 
   private String makeTitleCase(String input) {
