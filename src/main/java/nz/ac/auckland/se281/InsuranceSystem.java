@@ -92,7 +92,8 @@ public class InsuranceSystem {
     User user = new User(formattedUserName, ageInt);
     users.put(formattedUserName, user);
     this.numberOfProfiles++;
-    MessageCli.PROFILE_CREATED.printMessage(formattedUserName, age);
+    // prints integer to string to prevent user formatting while printing
+    MessageCli.PROFILE_CREATED.printMessage(formattedUserName, Integer.toString(ageInt));
 
   }
 
