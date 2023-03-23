@@ -78,7 +78,7 @@ public class InsuranceSystem {
       // see if the username is too short
       MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
       return;
-    } else if (ageInt < 0 || ageInt > 120) {
+    } else if (ageInt < 1 || ageInt > 120) {
       // see if the age is invalid
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
@@ -94,6 +94,7 @@ public class InsuranceSystem {
     this.numberOfProfiles++;
     // prints integer to string to prevent user formatting while printing
     MessageCli.PROFILE_CREATED.printMessage(formattedUserName, Integer.toString(ageInt));
+
   }
 
   private String makeTitleCase(String input) {
