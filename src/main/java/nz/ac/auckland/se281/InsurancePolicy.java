@@ -19,4 +19,8 @@ public abstract class InsurancePolicy {
     public double getBasePremium() {
         return -1;
     }
+
+    public PolicyType getType() {
+        return type;
+    }
 }
