@@ -153,6 +153,17 @@ public class InsuranceSystem {
   }
 
   public void createPolicy(PolicyType type, String[] options) {
-    // TODO: Complete this method.
+    // check if a user is loaded
+    if (this.loadedUser == null) {
+      MessageCli.NO_PROFILE_LOADED.printMessage();
+      return;
+    }
+
+    // get options
+    int insuringSum = Integer.parseInt(options[0]);
+    String propertyAddress = options[1];
+    boolean isRental = Boolean.parseBoolean(options[2]);
+
+    System.out.println("yo test " + options[0]);
   }
 }
