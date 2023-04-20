@@ -6,7 +6,7 @@ public class User {
     private String userName;
     private int age;
 
-    private ArrayList<InsurancePolicy> policies;
+    private ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
 
     public User(String userName, int age) {
         this.userName = userName;
@@ -39,6 +39,15 @@ public class User {
             }
         }
         this.policies.add(policy);
+        MessageCli.NEW_POLICY_CREATED.printMessage(userName, policy.getType().toString());
+    }
+
+    public void removePolicy(InsurancePolicy policy) {
+        this.policies.remove(policy);
+    }
+
+    public int getNumberOfPolicies() {
+        return this.policies.size();
     }
 
 }
