@@ -38,12 +38,22 @@ public class InsuranceSystem {
       User user = (User) users.get(userName);
       // prints the details from user object
       // if the user is the loaded user, print asterisks
-      if (this.loadedUser == user) {
-        MessageCli.PRINT_DB_PROFILE_HEADER_SHORT.printMessage("*** ", i.toString(), userName,
-            String.valueOf(user.getAge()));
+
+      String active = "";
+
+      if (this.loadedUser == user)
+        active = "*** ";
+
+      if (user.getNumberOfPolicies() == 0) {
+        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies.");
+        continue;
+      } else if (user.getNumberOfPolicies() == 1) {
+        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "y.");
       } else {
-        MessageCli.PRINT_DB_PROFILE_HEADER_MINIMAL.printMessage(i.toString(), userName,
-            Integer.toString(user.getAge()));
+        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies.");
       }
     }
 
@@ -103,6 +113,19 @@ public class InsuranceSystem {
     return formattedString;
   }
 
+  private Boolean parseToBoolean(String input) {
+    // for parsing boolean input
+    if (input.equals("y") || input.equals("Y") || input.equals("yes") || input.equals("Yes") || input.equals("true")
+        || input.equals("True")) {
+      return true;
+    } else if (input.equals("n") || input.equals("N") || input.equals("no") || input.equals("No")
+        || input.equals("false") || input.equals("False")) {
+      return false;
+    } else {
+      return null;
+    }
+  }
+
   public void loadProfile(String userName) {
     String formattedUserName = makeTitleCase(userName);
 
@@ -159,11 +182,27 @@ public class InsuranceSystem {
       return;
     }
 
-    // get options
-    int insuringSum = Integer.parseInt(options[0]);
-    String propertyAddress = options[1];
-    boolean isRental = Boolean.parseBoolean(options[2]);
+    InsurancePolicy policyToAdd;
 
-    System.out.println("yo test " + options[0]);
+    switch (type) {
+      case CAR:
+        policyToAdd = new PolicyCar(loadedUser, Integer.parseInt(options[0]), options[1], options[2],
+            this.parseToBoolean(options[3]));
+        break;
+      case HOME:
+        policyToAdd = new PolicyHome(loadedUser, Integer.parseInt(options[0]), options[1],
+            this.parseToBoolean(options[2]));
+        break;
+      case LIFE:
+        policyToAdd = new PolicyLife(loadedUser, Integer.parseInt(options[0]));
+        break;
+      default:
+        policyToAdd = null;
+        break;
+    }
+
+    // add policy to user
+    loadedUser.addPolicy(policyToAdd);
+
   }
 }
