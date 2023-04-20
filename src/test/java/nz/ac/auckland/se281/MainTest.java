@@ -11,10 +11,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-  MainTest.Task1.class,
-  // MainTest.Task2.class, // Uncomment this line when to start Task 2
-  // MainTest.Task3.class, // Uncomment this line when to start Task 3
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+    MainTest.Task1.class,
+    // MainTest.Task2.class, // Uncomment this line when to start Task 2
+    // MainTest.Task3.class, // Uncomment this line when to start Task 3
+    MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
   public static class Task1 extends CliTest {
@@ -361,27 +361,172 @@ public class MainTest {
       super(Main.class);
     }
 
+    // @Test
+    // public void TY_01_your_own_test() throws Exception {
+    // // Write your own test here, in the same format as the other tests.
+    // runCommands(PRINT_DB);
+    // assertContains("");
+    // }
+
+    // @Test
+    // public void TY_02_your_own_test() throws Exception {
+    // // Write your own test here, in the same format as the other tests.
+    // runCommands(PRINT_DB);
+    // assertContains("");
+    // }
+
     @Test
-    public void TY_01_your_own_test() throws Exception {
-      // Write your own test here, in the same format as the other tests.
-      runCommands(PRINT_DB);
-      assertContains("");
+    public void T2_M01_load_invalid_profile_while_already_loaded() throws Exception {
+      runCommands(
+          unpack(CREATE_SOME_CLIENTS, LOAD_PROFILE, "jorDAN", LOAD_PROFILE, "toBY", PRINT_DB));
+
+      assertContains("Profile loaded for Jordan.");
+      assertContains("No profile found for Toby. Profile not loaded.");
+      assertContains("Database has 3 profiles:");
+      assertContains("*** 1: Jordan, 21");
+
+      assertDoesNotContain("Profile loaded for Toby.", true);
     }
 
     @Test
-    public void TY_02_your_own_test() throws Exception {
-      // Write your own test here, in the same format as the other tests.
-      runCommands(PRINT_DB);
-      assertContains("");
+    public void T2_M02_create_profile_when_profile_loaded() throws Exception {
+      runCommands(
+          unpack(CREATE_SOME_CLIENTS, LOAD_PROFILE, "TOM", CREATE_PROFILE, "tOBy", "28", PRINT_DB));
+
+      assertContains("Profile loaded for Tom.");
+      assertContains("Cannot create a new profile. First unload the profile for Tom.");
+      assertContains("Database has 3 profiles:");
+
+      assertDoesNotContain("Database has 4 profiles:", true);
+      assertDoesNotContain("4: Tom, 28", true);
+    }
+
+    @Test
+    public void T2_M03_create_profile_after_profile_loaded() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_SOME_CLIENTS,
+              LOAD_PROFILE,
+              "toM",
+              UNLOAD_PROFILE,
+              CREATE_PROFILE,
+              "ToBy",
+              "28",
+              PRINT_DB));
+
+      assertContains("Profile loaded for Tom.");
+      assertContains("Profile unloaded for Tom.");
+      assertContains("New profile created for Toby with age 28.");
+      assertContains("Database has 4 profiles:");
+      assertContains("4: Toby, 28");
+
+      assertDoesNotContain("Cannot create a new profile. First unload the profile for Tom.", true);
+      assertDoesNotContain("Database has 3 profiles:", true);
+    }
+
+    @Test
+    public void T2_M04_delete_profile_not_found() throws Exception {
+      runCommands(unpack(CREATE_SOME_CLIENTS, DELETE_PROFILE, "samUEl", PRINT_DB));
+
+      assertContains("Database has 3 profiles:");
+      assertContains("No profile found for Samuel. No profile was deleted.");
+
+      assertDoesNotContain("Profile deleted for Samuel.", true);
+    }
+
+    @Test
+    public void T3_M01_create_car_policy_age_test() throws Exception {
+      runCommands(
+          unpack( //
+              CREATE_SOME_CLIENTS, //
+              LOAD_PROFILE,
+              "ToM", //
+              POLICY_CAR,
+              options("35000", "Nissan Leaf", "GR333N", "no"), //
+              LOAD_PROFILE,
+              "jorDAN", //
+              POLICY_CAR,
+              options("1000", "Toyota RAV-4", "S4V3RS", "yes"), //
+              PRINT_DB));
+
+      assertContains("Profile loaded for Tom.");
+      assertContains("Profile loaded for Jordan.");
+
+      assertContains("Car Policy (Nissan Leaf, Sum Insured: $35000, Premium: $3500 -> $3500)");
+      assertContains("Car Policy (Toyota RAV-4, Sum Insured: $1000, Premium: $230 -> $230)");
+
+      assertContains(" *** 1: Jordan, 21, 1 policy for a total of $230");
+      assertContains("2: Tom, 25, 1 policy for a total of $3500");
+    }
+
+    @Test
+    public void T3_M02_maximum_age_boundary_life_policy() throws Exception {
+      runCommands( //
+          CREATE_PROFILE,
+          "cAMEROn",
+          "100", //
+          LOAD_PROFILE,
+          "CAMERon", //
+          POLICY_LIFE,
+          options("950000"), //
+          PRINT_DB);
+
+      assertContains("New profile created for Cameron with age 100.");
+      assertContains("Profile loaded for Cameron.");
+
+      assertContains("Life Policy (Sum Insured: $950000, Premium: $19000 -> $19000)");
+    }
+
+    @Test
+    public void T3_M03_only_one_life_policy_per_profile() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_SOME_CLIENTS, //
+              LOAD_PROFILE,
+              "JEnnY", //
+              POLICY_LIFE,
+              options("15000000"), //
+              LOAD_PROFILE,
+              "JorDAN", //
+              POLICY_LIFE,
+              options("5000000"), //
+              POLICY_HOME,
+              options("7500000", "80 Queens Road", "yes"), //
+              LOAD_PROFILE,
+              "JEnNY", //
+              POLICY_LIFE,
+              options("10000000"), //
+              PRINT_DB));
+
+      assertContains("Profile loaded for Jenny.");
+      assertContains("Profile loaded for Jordan.");
+
+      assertContains("New life policy created for Jenny.");
+      assertContains("New life policy created for Jordan.");
+      assertContains("New home policy created for Jordan.");
+
+      assertContains("Life Policy (Sum Insured: $15000000, Premium: $184500 -> $184500)");
+      assertContains("Life Policy (Sum Insured: $5000000, Premium: $60500 -> $54450)");
+      assertContains(
+          "Home Policy (80 Queens Road, Sum Insured: $7500000, Premium: $150000 -> $135000)");
+
+      assertContains("Jenny already has a life policy. No new policy was created.");
+
+      assertDoesNotContain(
+          "Life Policy (Sum Insured: $10000000, Premium: $123000 -> $123000)", true);
+      assertDoesNotContain(
+          "Life Policy (Sum Insured: $10000000, Premium: $123000 -> $110700)", true);
+      assertDoesNotContain(
+          "Life Policy (Sum Insured: $15000000, Premium: $184500 -> $166050)", true);
+      assertDoesNotContain("3: Jenny, 23, 2 policies", true);
     }
   }
 
-  private static final Object[] CREATE_SOME_CLIENTS =
-      new Object[] {
-        CREATE_PROFILE, "Jordan", "21", //
-        CREATE_PROFILE, "Tom", "25", //
-        CREATE_PROFILE, "Jenny", "23",
-      };
+  private static final Object[] CREATE_SOME_CLIENTS = new Object[] {
+      CREATE_PROFILE, "Jordan", "21", //
+      CREATE_PROFILE, "Tom", "25", //
+      CREATE_PROFILE, "Jenny", "23",
+  };
 
   private static Object[] unpack(Object[] commands, Object... more) {
     final List<Object> all = new ArrayList<Object>();
