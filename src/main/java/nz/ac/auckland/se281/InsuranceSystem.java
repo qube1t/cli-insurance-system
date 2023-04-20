@@ -47,16 +47,19 @@ public class InsuranceSystem {
 
       // check details and print the number of policies
       if (user.getNumberOfPolicies() == 0) {
-        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
-            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies.");
-        continue;
+        MessageCli.PRINT_DB_PROFILE_HEADER_LONG.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies",
+            Integer.toString((int) user.getTotalPremium()));
       } else if (user.getNumberOfPolicies() == 1) {
-        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
-            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "y.");
+        MessageCli.PRINT_DB_PROFILE_HEADER_LONG.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "y",
+            Integer.toString((int) user.getTotalPremium()));
       } else {
-        MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
-            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies.");
+        MessageCli.PRINT_DB_PROFILE_HEADER_LONG.printMessage(active, i.toString(), userName,
+            Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies",
+            Integer.toString((int) user.getTotalPremium()));
       }
+      user.printPolicies();
     }
 
   }
@@ -132,13 +135,15 @@ public class InsuranceSystem {
     String formattedUserName = makeTitleCase(userName);
 
     // setting the loaded user to be the inputed user
-    this.loadedUser = (User) users.get(formattedUserName);
+    User userToBeLoaded = (User) users.get(formattedUserName);
 
     // check if user exists
-    if (this.loadedUser == null) {
+    if (userToBeLoaded == null) {
       MessageCli.NO_PROFILE_FOUND_TO_LOAD.printMessage(formattedUserName);
       return;
     }
+
+    this.loadedUser = userToBeLoaded;
 
     // successfully loaded
     MessageCli.PROFILE_LOADED.printMessage(formattedUserName);
@@ -208,25 +213,28 @@ public class InsuranceSystem {
     // add policy to user
     loadedUser.addPolicy(policyToAdd);
 
-    switch (type) {
-      case CAR:
-        MessageCli.PRINT_DB_CAR_POLICY.printMessage(options[1], options[0],
-            String.valueOf((int) policyToAdd.getBasePremium()),
-            String.valueOf((int) policyToAdd.getDiscountedPremium()));
-        break;
-      case HOME:
-        MessageCli.PRINT_DB_HOME_POLICY.printMessage(options[1], options[0],
-            String.valueOf((int) policyToAdd.getBasePremium()),
-            String.valueOf((int) policyToAdd.getDiscountedPremium()));
-        break;
-      case LIFE:
-        MessageCli.PRINT_DB_LIFE_POLICY.printMessage(options[0],
-            String.valueOf((int) policyToAdd.getBasePremium()),
-            String.valueOf((int) policyToAdd.getDiscountedPremium()));
-        break;
-      default:
-        break;
-    }
-
   }
+
+  // private void printPolicy(PolicyType type, InsurancePolicy policyToAdd,
+  // String[] options) {
+  // // prints the policy
+  // switch (type) {
+  // case CAR:
+  // MessageCli.PRINT_DB_CAR_POLICY.printMessage(options[1], options[0],
+  // String.valueOf((int) policyToAdd.getBasePremium()),
+  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
+  // break;
+  // case HOME:
+  // MessageCli.PRINT_DB_HOME_POLICY.printMessage(options[1], options[0],
+  // String.valueOf((int) policyToAdd.getBasePremium()),
+  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
+  // break;
+  // case LIFE:
+  // MessageCli.PRINT_DB_LIFE_POLICY.printMessage(options[0],
+  // String.valueOf((int) policyToAdd.getBasePremium()),
+  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
+  // break;
+  // default:
+  // break;
+  // }
 }

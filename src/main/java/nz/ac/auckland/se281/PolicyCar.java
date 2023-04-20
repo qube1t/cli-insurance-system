@@ -30,4 +30,11 @@ public class PolicyCar extends InsurancePolicy {
             return initialBasePremium;
         }
     }
+
+    @Override
+    public void printSummary() {
+        MessageCli.PRINT_DB_CAR_POLICY.printMessage(makeAndModel, Integer.toString(sumInsured),
+                String.valueOf((int) getBasePremium()),
+                String.valueOf((int) getDiscountedPremium()));
+    }
 }

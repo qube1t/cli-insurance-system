@@ -14,14 +14,11 @@ public abstract class InsurancePolicy {
         this.user = user;
         this.type = type;
         this.sumInsured = sumInsured;
-
-        // this.premium = getBasePremium();
-        // this.baseId++;
     }
 
-    public double getBasePremium() {
-        return -1;
-    }
+    public abstract double getBasePremium();
+
+    public abstract void printSummary();
 
     public void setDiscountedPremium(int noOfPolicies) {
         this.premium = getBasePremium();
@@ -40,4 +37,5 @@ public abstract class InsurancePolicy {
     public double getDiscountedPremium() {
         return premium;
     }
+
 }

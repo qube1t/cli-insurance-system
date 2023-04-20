@@ -9,6 +9,13 @@ public class PolicyLife extends InsurancePolicy {
 
     @Override
     public double getBasePremium() {
-        return (1 + user.getAge() / 100) * sumInsured;
+        return (1 + (double) user.getAge() / 100) * (double) sumInsured / 100;
+    }
+
+    @Override
+    public void printSummary() {
+        MessageCli.PRINT_DB_LIFE_POLICY.printMessage(Integer.toString(sumInsured),
+                String.valueOf((int) getBasePremium()),
+                String.valueOf((int) getDiscountedPremium()));
     }
 }

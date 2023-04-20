@@ -21,4 +21,11 @@ public class PolicyHome extends InsurancePolicy {
             return 0.01 * sumInsured;
         }
     }
+
+    @Override
+    public void printSummary() {
+        MessageCli.PRINT_DB_HOME_POLICY.printMessage(propertyAddress, Integer.toString(sumInsured),
+                String.valueOf((int) getBasePremium()),
+                String.valueOf((int) getDiscountedPremium()));
+    }
 }
