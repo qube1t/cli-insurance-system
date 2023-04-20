@@ -53,7 +53,8 @@ public class User {
             totalPremium += p.getDiscountedPremium();
         }
 
-        MessageCli.NEW_POLICY_CREATED.printMessage(policy.getType().toString().toLowerCase(), userName);
+        MessageCli.NEW_POLICY_CREATED.printMessage(policy.getType().toString().toLowerCase(),
+                userName);
         policy.printSummary();
 
     }

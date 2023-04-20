@@ -120,8 +120,8 @@ public class InsuranceSystem {
 
   private Boolean parseToBoolean(String input) {
     // for parsing boolean input
-    if (input.equals("y") || input.equals("Y") || input.equals("yes") || input.equals("Yes") || input.equals("true")
-        || input.equals("True")) {
+    if (input.equals("y") || input.equals("Y") || input.equals("yes") || input.equals("Yes")
+        || input.equals("true") || input.equals("True")) {
       return true;
     } else if (input.equals("n") || input.equals("N") || input.equals("no") || input.equals("No")
         || input.equals("false") || input.equals("False")) {
@@ -199,8 +199,8 @@ public class InsuranceSystem {
             this.parseToBoolean(options[3]));
         break;
       case HOME:
-        policyToAdd = new PolicyHome(loadedUser, sumInsured, options[1],
-            this.parseToBoolean(options[2]));
+        policyToAdd =
+            new PolicyHome(loadedUser, sumInsured, options[1], this.parseToBoolean(options[2]));
         break;
       case LIFE:
         policyToAdd = new PolicyLife(loadedUser, sumInsured);
@@ -214,27 +214,4 @@ public class InsuranceSystem {
     loadedUser.addPolicy(policyToAdd);
 
   }
-
-  // private void printPolicy(PolicyType type, InsurancePolicy policyToAdd,
-  // String[] options) {
-  // // prints the policy
-  // switch (type) {
-  // case CAR:
-  // MessageCli.PRINT_DB_CAR_POLICY.printMessage(options[1], options[0],
-  // String.valueOf((int) policyToAdd.getBasePremium()),
-  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
-  // break;
-  // case HOME:
-  // MessageCli.PRINT_DB_HOME_POLICY.printMessage(options[1], options[0],
-  // String.valueOf((int) policyToAdd.getBasePremium()),
-  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
-  // break;
-  // case LIFE:
-  // MessageCli.PRINT_DB_LIFE_POLICY.printMessage(options[0],
-  // String.valueOf((int) policyToAdd.getBasePremium()),
-  // String.valueOf((int) policyToAdd.getDiscountedPremium()));
-  // break;
-  // default:
-  // break;
-  // }
 }
