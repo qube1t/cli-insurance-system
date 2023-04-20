@@ -21,6 +21,7 @@ public abstract class InsurancePolicy {
     public abstract void printSummary();
 
     public void setDiscountedPremium(int noOfPolicies) {
+        // calculate discounted premium using no of policies of the user
         this.premium = getBasePremium();
 
         if (noOfPolicies == 2)
