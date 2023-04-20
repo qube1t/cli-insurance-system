@@ -6,7 +6,8 @@ public class PolicyCar extends InsurancePolicy {
     private String makeAndModel;
     private boolean mechanicalWarranty;
 
-    public PolicyCar(User user, int sumInsured, String makeAndModel, String licensePlate, boolean mechanicalWarranty) {
+    public PolicyCar(User user, int sumInsured, String makeAndModel, String licensePlate,
+            boolean mechanicalWarranty) {
         super(user, PolicyType.CAR, sumInsured);
 
         this.makeAndModel = makeAndModel;
@@ -16,12 +17,15 @@ public class PolicyCar extends InsurancePolicy {
     @Override
     public double getBasePremium() {
         double initialBasePremium;
+
+        // calculate base premium based on age
         if (user.getAge() < 25) {
             initialBasePremium = 0.15 * sumInsured;
         } else {
             initialBasePremium = 0.1 * sumInsured;
         }
 
+        // add mechanical warranty
         if (mechanicalWarranty) {
             return initialBasePremium + 80;
         } else {
