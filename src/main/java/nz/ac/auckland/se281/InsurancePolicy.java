@@ -6,6 +6,7 @@ public abstract class InsurancePolicy {
     private PolicyType type;
     protected int sumInsured;
     protected User user;
+    protected double premium;
 
     // private static int baseId = 0;
 
@@ -13,6 +14,8 @@ public abstract class InsurancePolicy {
         this.user = user;
         this.type = type;
         this.sumInsured = sumInsured;
+
+        // this.premium = getBasePremium();
         // this.baseId++;
     }
 
@@ -20,7 +23,21 @@ public abstract class InsurancePolicy {
         return -1;
     }
 
+    public void setDiscountedPremium(int noOfPolicies) {
+        this.premium = getBasePremium();
+
+        if (noOfPolicies == 2)
+            this.premium *= 0.9;
+        else if (noOfPolicies > 2)
+            this.premium *= 0.8;
+
+    }
+
     public PolicyType getType() {
         return type;
+    }
+
+    public double getDiscountedPremium() {
+        return premium;
     }
 }

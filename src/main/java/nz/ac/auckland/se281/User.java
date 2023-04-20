@@ -7,6 +7,7 @@ public class User {
     private int age;
 
     private ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
+    private double totalPremium;
 
     public User(String userName, int age) {
         this.userName = userName;
@@ -38,8 +39,21 @@ public class User {
                 }
             }
         }
+
         this.policies.add(policy);
-        MessageCli.NEW_POLICY_CREATED.printMessage(userName, policy.getType().toString());
+
+        // apply discounts
+        for (InsurancePolicy p : this.policies) {
+            p.setDiscountedPremium(this.getNumberOfPolicies());
+        }
+
+        // total premium
+        for (InsurancePolicy p : this.policies) {
+            totalPremium += p.getDiscountedPremium();
+        }
+
+        MessageCli.NEW_POLICY_CREATED.printMessage(policy.getType().toString().toLowerCase(), userName);
+
     }
 
     public void removePolicy(InsurancePolicy policy) {
@@ -48,6 +62,10 @@ public class User {
 
     public int getNumberOfPolicies() {
         return this.policies.size();
+    }
+
+    public double getTotalPremium() {
+        return this.totalPremium;
     }
 
 }

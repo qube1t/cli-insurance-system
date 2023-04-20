@@ -41,9 +41,11 @@ public class InsuranceSystem {
 
       String active = "";
 
+      // if the user is the loaded user, print asterisks
       if (this.loadedUser == user)
         active = "*** ";
 
+      // check details and print the number of policies
       if (user.getNumberOfPolicies() == 0) {
         MessageCli.PRINT_DB_PROFILE_HEADER_MEDIUM.printMessage(active, i.toString(), userName,
             Integer.toString(user.getAge()), Integer.toString(user.getNumberOfPolicies()), "ies.");
@@ -178,23 +180,25 @@ public class InsuranceSystem {
   public void createPolicy(PolicyType type, String[] options) {
     // check if a user is loaded
     if (this.loadedUser == null) {
-      MessageCli.NO_PROFILE_LOADED.printMessage();
+      MessageCli.NO_PROFILE_FOUND_TO_CREATE_POLICY.printMessage();
       return;
     }
+
+    int sumInsured = Integer.parseInt(options[0]);
 
     InsurancePolicy policyToAdd;
 
     switch (type) {
       case CAR:
-        policyToAdd = new PolicyCar(loadedUser, Integer.parseInt(options[0]), options[1], options[2],
+        policyToAdd = new PolicyCar(loadedUser, sumInsured, options[1], options[2],
             this.parseToBoolean(options[3]));
         break;
       case HOME:
-        policyToAdd = new PolicyHome(loadedUser, Integer.parseInt(options[0]), options[1],
+        policyToAdd = new PolicyHome(loadedUser, sumInsured, options[1],
             this.parseToBoolean(options[2]));
         break;
       case LIFE:
-        policyToAdd = new PolicyLife(loadedUser, Integer.parseInt(options[0]));
+        policyToAdd = new PolicyLife(loadedUser, sumInsured);
         break;
       default:
         policyToAdd = null;
@@ -203,6 +207,26 @@ public class InsuranceSystem {
 
     // add policy to user
     loadedUser.addPolicy(policyToAdd);
+
+    switch (type) {
+      case CAR:
+        MessageCli.PRINT_DB_CAR_POLICY.printMessage(options[1], options[0],
+            String.valueOf((int) policyToAdd.getBasePremium()),
+            String.valueOf((int) policyToAdd.getDiscountedPremium()));
+        break;
+      case HOME:
+        MessageCli.PRINT_DB_HOME_POLICY.printMessage(options[1], options[0],
+            String.valueOf((int) policyToAdd.getBasePremium()),
+            String.valueOf((int) policyToAdd.getDiscountedPremium()));
+        break;
+      case LIFE:
+        MessageCli.PRINT_DB_LIFE_POLICY.printMessage(options[0],
+            String.valueOf((int) policyToAdd.getBasePremium()),
+            String.valueOf((int) policyToAdd.getDiscountedPremium()));
+        break;
+      default:
+        break;
+    }
 
   }
 }
