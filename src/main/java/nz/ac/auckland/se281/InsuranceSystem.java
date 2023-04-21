@@ -119,15 +119,9 @@ public class InsuranceSystem {
 
   private Boolean parseToBoolean(String input) {
     // for parsing boolean input
-    if (input.equals("y") || input.equals("Y") || input.equals("yes") || input.equals("Yes")
-        || input.equals("true") || input.equals("True")) {
+    if (input.toLowerCase().startsWith("y"))
       return true;
-    } else if (input.equals("n") || input.equals("N") || input.equals("no") || input.equals("No")
-        || input.equals("false") || input.equals("False")) {
-      return false;
-    } else {
-      return null;
-    }
+    return false;
   }
 
   public void loadProfile(String userName) {
@@ -198,8 +192,7 @@ public class InsuranceSystem {
             this.parseToBoolean(options[3]));
         break;
       case HOME:
-        policyToAdd =
-            new PolicyHome(loadedUser, sumInsured, options[1], this.parseToBoolean(options[2]));
+        policyToAdd = new PolicyHome(loadedUser, sumInsured, options[1], this.parseToBoolean(options[2]));
         break;
       case LIFE:
         policyToAdd = new PolicyLife(loadedUser, sumInsured);
