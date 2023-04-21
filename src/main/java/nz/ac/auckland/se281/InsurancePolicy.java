@@ -8,8 +8,6 @@ public abstract class InsurancePolicy {
   protected User user;
   protected double premium;
 
-  // private static int baseId = 0;
-
   public InsurancePolicy(User user, PolicyType type, int sumInsured) {
     this.user = user;
     this.type = type;
