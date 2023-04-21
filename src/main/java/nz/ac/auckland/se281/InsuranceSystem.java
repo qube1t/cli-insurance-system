@@ -1,7 +1,6 @@
 package nz.ac.auckland.se281;
 
 import java.util.LinkedHashMap;
-
 import nz.ac.auckland.se281.Main.PolicyType;
 
 public class InsuranceSystem {
