@@ -47,15 +47,13 @@ public class User {
       p.setDiscountedPremium(this.getNumberOfPolicies());
     }
 
-    totalPremium = 0;
-    // total premium
-    for (InsurancePolicy p : this.policies) {
-      totalPremium += p.getDiscountedPremium();
-    }
-
+    // print success msg and summary
     MessageCli.NEW_POLICY_CREATED.printMessage(policy.getType().toString().toLowerCase(),
         userName);
     policy.printSummary();
+
+    // set total premium of the user
+    setTotalPremium();
 
   }
 
@@ -65,6 +63,14 @@ public class User {
 
   public int getNumberOfPolicies() {
     return this.policies.size();
+  }
+
+  private void setTotalPremium() {
+    this.totalPremium = 0;
+
+    for (InsurancePolicy p : this.policies) {
+      this.totalPremium += p.getDiscountedPremium();
+    }
   }
 
   public double getTotalPremium() {
