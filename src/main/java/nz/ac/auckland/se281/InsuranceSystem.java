@@ -91,7 +91,7 @@ public class InsuranceSystem {
       // see if the username is too short
       MessageCli.INVALID_USERNAME_TOO_SHORT.printMessage(formattedUserName);
       return;
-    } else if (ageInt < 1 || ageInt > 120) {
+    } else if (ageInt < 1 || ageInt > 200) {
       // see if the age is invalid
       MessageCli.INVALID_AGE.printMessage(age, formattedUserName);
       return;
